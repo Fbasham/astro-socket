@@ -1,0 +1,59 @@
+---
+const { room } = Astro.params;
+---
+
+<body>
+  <h1>Room #{room}</h1>
+  <div class="chat">
+    <form>
+      <input />
+    </form>
+  </div>
+</body>
+
+<script>
+  import io from "socket.io-client";
+
+  let socket = io("http://127.0.0.1:5500");
+  let room = document.querySelector("h1").textContent.split` `[1].slice(1);
+  let chat = document.querySelector(".chat");
+  let form = document.querySelector("form");
+  let inp = document.querySelector("input");
+
+  socket.emit("join-room", room);
+
+  socket.on("msg-from-server", (msg) => {
+    let p = document.createElement("p");
+    p.innerText = msg;
+    chat.append(p);
+  });
+
+  form.addEventListener("submit", (e) => {
+    e.preventDefault();
+    socket.emit("msg-to-server", { msg: inp.value, room });
+    inp.value = "";
+  });
+</script>
+
+<style>
+  * {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+  }
+
+  .chat {
+    position: relative;
+    border: 1px solid black;
+    width: 500px;
+    height: 500px;
+    overflow-y: scroll;
+    overflow-wrap: break-word;
+  }
+
+  input {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+  }
+</style>

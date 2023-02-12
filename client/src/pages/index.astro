@@ -1,0 +1,36 @@
+<body>
+  <h1>Astro Chat</h1>
+  <button>Create room</button>
+</body>
+
+<script>
+  const btn = document.querySelector("button");
+  btn.addEventListener("click", (e) => {
+    window.location = randomRoom();
+  });
+  function randomRoom() {
+    return (Math.random() * 8999) | (0 + 1000);
+  }
+</script>
+
+<style>
+  body {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  a {
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  a:hover {
+    background-color: #e7e7e7;
+  }
+</style>
